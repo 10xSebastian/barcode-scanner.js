@@ -29,7 +29,7 @@ class window.BarcodeScanner
         , BarcodeScanner.delay
 
   @execute: ->
-    target = if $("input:focus, textarea:focus").length then $("*:focus:first") else $("[data-BarcodeScanner-target]:last")
+    target = if $("input:focus, textarea:focus").length then $("*:focus:first") else $("[data-barcode-scanner-target]:last")
     prefix = BarcodeScanner.input.match(/^\s\w\s/).join().replace(/\s/g, "") if BarcodeScanner.input.match(/^\s\w\s/)?
     code = BarcodeScanner.input.replace(/^\s\w\s/, "")
     if target.is(":not(:focus)") and @knownPrefixes[prefix]? and (typeof(@knownPrefixes[prefix]) == "function")
@@ -39,5 +39,5 @@ class window.BarcodeScanner
     @submit target
 
   @submit: (target)=>
-    unless target.closest("[data-prevent-BarcodeScanner-submit]").length or target.data("prevent-BarcodeScanner-submit")?
+    unless target.closest("[data-barcode-scanner-submit]").length or target.data("prevent-barcode-scanner-submit")?
       $(target).closest("form").submit()
