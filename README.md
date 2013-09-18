@@ -1,3 +1,4 @@
+![Barcode Scanner](https://raw.github.com/spape/barcode.js/master/scanner.png)
 barcode.js
 ==========
 
