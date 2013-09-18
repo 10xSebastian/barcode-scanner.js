@@ -1,0 +1,15 @@
+language: node_js
+node_js:
+  - "0.9"
+  - "0.8"
+notifications:
+  email: false
+before_script:
+  - "sh compile.sh"
+before_install:
+  - npm install coffee-script
+  - npm install jasmine-node
+  - npm install jquery
+  - npm install jsdom
+  - npm install jasmine-jquery
+script: jasmine-node spec
