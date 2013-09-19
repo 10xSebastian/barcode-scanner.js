@@ -59,7 +59,7 @@ If an input or textarea is focused the barcode scanner input is always inserted 
   </form>
   
   1. scan 'IT1232'
-  2. insert 'IT1232' to input with name "first"
+  2. insert 'IT1232' to input
   3. form is NOT getting submitted
 
 ```
