@@ -67,9 +67,6 @@
 
     BarcodeScanner.prototype.execute = function() {
       var code, target;
-      console.log("=============");
-      console.log($("input:focus, textarea:focus").length);
-      console.log("=============");
       target = $("input:focus, textarea:focus").length ? $("input:focus, textearea:focus") : $("[data-barcode-scanner-target]:last");
       code = this.getCode();
       if (typeof knownAction !== "undefined" && knownAction !== null) {
@@ -101,7 +98,7 @@
     };
 
     BarcodeScanner.prototype.submit = function(target) {
-      if (!target.closest("[data-prevent-barcode-scanner-target]").length) {
+      if (!target.closest("[data-prevent-barcode-scanner-submit]").length) {
         return target.closest("form").submit();
       }
     };

@@ -37,9 +37,6 @@ class BarcodeScanner
     @timer = window.setTimeout (-> @buffer = null), @delay
 
   execute: =>
-    console.log "============="
-    console.log $("input:focus, textarea:focus").length
-    console.log "============="
     target = if $("input:focus, textarea:focus").length then $("input:focus, textearea:focus") else $("[data-barcode-scanner-target]:last")
     code = do @getCode
     # prefix = BarcodeScanner.findPrefix target
@@ -67,7 +64,7 @@ class BarcodeScanner
       @addChar char
 
   submit: (target)=>
-    if not target.closest("[data-prevent-barcode-scanner-target]").length
+    if not target.closest("[data-prevent-barcode-scanner-submit]").length
       target.closest("form").submit()
 
 window.BarcodeScanner = new BarcodeScanner()
