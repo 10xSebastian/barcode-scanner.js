@@ -1,5 +1,5 @@
 (function() {
-    global.KeyEvent = function(data, type) {
+    var KeyEvent = function(data, type) {
         this.keyCode = 'keyCode' in data ? data.keyCode : 0;
         this.charCode = 'charCode' in data ? data.charCode : 0;
 

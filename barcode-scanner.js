@@ -26,74 +26,92 @@
 
 
 (function() {
+  var BarcodeScanner,
+    __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
 
-  jQuery(function() {
-    return $(window).keypress(window.BarcodeScanner.onKeyPress);
-  });
+  BarcodeScanner = (function() {
+    var actions, buffer, delay, timer;
 
-  window.BarcodeScanner = (function() {
+    function BarcodeScanner() {
+      this.submit = __bind(this.submit, this);
 
-    function BarcodeScanner() {}
+      this.keyPress = __bind(this.keyPress, this);
 
-    BarcodeScanner.delay = 50;
+      this.getCode = __bind(this.getCode, this);
 
-    BarcodeScanner.timer = null;
+      this.execute = __bind(this.execute, this);
 
-    BarcodeScanner.buffer = null;
+      this.addChar = __bind(this.addChar, this);
 
-    BarcodeScanner.knownPrefixes = [];
+    }
 
-    BarcodeScanner.execute = function() {
-      var code, prefix, target;
-      target = $("*:focus:first").length ? $("*:focus:first") : $("[data-barcode-scanner-target]:last");
-      prefix = BarcodeScanner.findPrefix(target);
-      code = BarcodeScanner.buffer.replace(/^\s\w\s/, "");
-      if (target.is(":not(:focus)") && (this.knownPrefixes[prefix] != null) && (typeof this.knownPrefixes[prefix] === "function")) {
-        this.knownPrefixes[prefix].call(this, code);
-        return true;
+    actions = [];
+
+    buffer = null;
+
+    delay = 50;
+
+    timer = null;
+
+    BarcodeScanner.prototype.addChar = function(char) {
+      var _ref;
+      if ((_ref = this.buffer) == null) {
+        this.buffer = "";
       }
-      target.val("").val(code);
-      return this.submit(target);
+      this.buffer += char;
+      window.clearTimeout(this.timer);
+      return this.timer = window.setTimeout((function() {
+        return this.buffer = null;
+      }), this.delay);
     };
 
-    BarcodeScanner.findPrefix = function() {
-      if (BarcodeScanner.buffer.match(/^\s\w\s/) != null) {
-        return BarcodeScanner.buffer.match(/^\s\w\s/).join().replace(/\s/g, "");
+    BarcodeScanner.prototype.execute = function() {
+      var code, target;
+      console.log("=============");
+      console.log($("input:focus, textarea:focus").length);
+      console.log("=============");
+      target = $("input:focus, textarea:focus").length ? $("input:focus, textearea:focus") : $("[data-barcode-scanner-target]:last");
+      code = this.getCode();
+      if (typeof knownAction !== "undefined" && knownAction !== null) {
+
+      } else {
+        target.val("").val(code);
+        this.submit(target);
       }
+      return this.buffer = null;
     };
 
-    BarcodeScanner.onKeyPress = function(e) {
-      var char, charCode, _ref;
+    BarcodeScanner.prototype.getCode = function() {
+      return this.buffer.replace(/^\s\w\s/, "");
+    };
+
+    BarcodeScanner.prototype.keyPress = function(e) {
+      var char, charCode;
       if (e == null) {
         e = window.event;
       }
       charCode = typeof e.which === "number" ? e.which : e.keyCode;
       char = String.fromCharCode(charCode);
-      console.log(charCode === 13);
-      if ((charCode === 13) && (BarcodeScanner.buffer != null)) {
+      if ((charCode === 13) && (this.buffer != null)) {
         e.preventDefault();
-        BarcodeScanner.execute();
-        return BarcodeScanner.buffer = null;
+        return this.execute();
       } else {
-        if ((_ref = BarcodeScanner.buffer) == null) {
-          BarcodeScanner.buffer = "";
-        }
-        BarcodeScanner.buffer += _char;
-        window.clearTimeout(BarcodeScanner.timer);
-        return BarcodeScanner.timer = window.setTimeout(function() {
-          return BarcodeScanner.buffer = null;
-        }, BarcodeScanner.delay);
+        return this.addChar(char);
       }
     };
 
-    BarcodeScanner.submit = function(target) {
-      if (!(target.closest("[data-prevent-barcode-scanner-submit]").length || (target.data("prevent-barcode-scanner-submit") != null))) {
-        return $(target).closest("form").submit();
+    BarcodeScanner.prototype.submit = function(target) {
+      if (!target.closest("[data-prevent-barcode-scanner-target]").length) {
+        return target.closest("form").submit();
       }
     };
 
     return BarcodeScanner;
 
-  }).call(this);
+  })();
+
+  window.BarcodeScanner = new BarcodeScanner();
+
+  $(window).keypress(window.BarcodeScanner.keyPress);
 
 }).call(this);

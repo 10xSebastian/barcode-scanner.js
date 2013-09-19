@@ -23,44 +23,53 @@
   
 ###
 
-jQuery -> $(window).keypress window.BarcodeScanner.onKeyPress
+class BarcodeScanner
 
-class window.BarcodeScanner
-
-  @delay = 50
-  @timer = null
-  @buffer = null
-  @knownPrefixes = []
+  actions = []
+  buffer = null
+  delay = 50
+  timer = null
   
-  @execute: ->
-    target = if $("*:focus:first").length then $("*:focus:first") else $("[data-barcode-scanner-target]:last")
-    prefix = BarcodeScanner.findPrefix target
-    code = BarcodeScanner.buffer.replace(/^\s\w\s/, "")
-    if target.is(":not(:focus)") and @knownPrefixes[prefix]? and (typeof(@knownPrefixes[prefix]) == "function")
-      @knownPrefixes[prefix].call @, code
-      return true
-    target.val("").val code
-    @submit target
+  addChar: (char)=>
+    @buffer ?= ""
+    @buffer += char
+    window.clearTimeout @timer
+    @timer = window.setTimeout (-> @buffer = null), @delay
 
-  @findPrefix: ->
-    BarcodeScanner.buffer.match(/^\s\w\s/).join().replace(/\s/g, "") if BarcodeScanner.buffer.match(/^\s\w\s/)?
-
-  @onKeyPress: (e = window.event)=>
-    charCode = if (typeof e.which == "number") then e.which else e.keyCode  
-    char = String.fromCharCode(charCode)
-    console.log charCode == 13
-    if (charCode == 13) and BarcodeScanner.buffer?
-      e.preventDefault()
-      BarcodeScanner.execute()
-      BarcodeScanner.buffer = null
+  execute: =>
+    console.log "============="
+    console.log $("input:focus, textarea:focus").length
+    console.log "============="
+    target = if $("input:focus, textarea:focus").length then $("input:focus, textearea:focus") else $("[data-barcode-scanner-target]:last")
+    code = do @getCode
+    # prefix = BarcodeScanner.findPrefix target
+    # code = BarcodeScanner.buffer.replace(/^\s\w\s/, "")
+    # if target.is(":not(:focus)") and @knownPrefixes[prefix]? and (typeof(@knownPrefixes[prefix]) == "function")
+    #   #@knownPrefixes[prefix].call @, code
+    #   return true
+    if knownAction?
     else
-      BarcodeScanner.buffer ?= ""
-      BarcodeScanner.buffer += _char
-      window.clearTimeout BarcodeScanner.timer  
-      BarcodeScanner.timer = window.setTimeout ()-> 
-        BarcodeScanner.buffer = null
-      , BarcodeScanner.delay
+      target.val("").val code
+      @submit target
+    @buffer = null
 
-  @submit: (target)=>
-    unless target.closest("[data-prevent-barcode-scanner-submit]").length or target.data("prevent-barcode-scanner-submit")?
-      $(target).closest("form").submit()
+  getCode: => @buffer.replace(/^\s\w\s/, "")
+
+  # findPrefix: -> @buffer.match(/^\s\w\s/).join().replace(/\s/g, "") if @buffer.match(/^\s\w\s/)?
+
+  keyPress: (e = window.event)=>
+    charCode = if (typeof e.which == "number") then e.which else e.keyCode
+    char = String.fromCharCode(charCode)
+    if (charCode == 13) and @buffer?
+      do e.preventDefault
+      do @execute
+    else
+      @addChar char
+
+  submit: (target)=>
+    if not target.closest("[data-prevent-barcode-scanner-target]").length
+      target.closest("form").submit()
+
+window.BarcodeScanner = new BarcodeScanner()
+
+$(window).keypress window.BarcodeScanner.keyPress
