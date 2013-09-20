@@ -6,4 +6,4 @@ gem 'guard-shell'
 gem 'haml'
 gem 'jasmine'
 gem 'sass'
-gem 'selenium-webdriver'
+gem "selenium-webdriver", "~> 2.35.1"
