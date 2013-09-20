@@ -95,3 +95,7 @@ If an input or textarea is focused the barcode scanner input is always inserted 
   3. no form is getting submitted, no chars will be added to any input field
 
 ```
+
+## Tests
+
+[Jasmine Tests](https://rawgithub.com/spape/barcode-scanner.js/master/SpecRunner.html)
