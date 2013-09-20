@@ -1,28 +1,3 @@
-###
-
-  BarcodeScanner
-
-  TODO:
-   - configuration for when to submit
-   - configuration for submit when delay ends
-  
-    BarcodeScanner.addPrefix "C", (text)=>
-    alert(text);
-
-    Regexp 
-
-    BarcodeScanner "c(:term)", (term) =>
-      lkajsdfkljasdf
-
-    BarcodeScanner "*", (text) =>
-      closest().val(text).closest(form).submit()
-
-    BarcodeScanner "*", 50, (text)=> 
-
-    BarcodeScanner regexp, delay, function
-  
-###
-
 class BarcodeScanner
 
   constructor: ->
