@@ -71,4 +71,4 @@ DEPENDENCIES
   jasmine
   rake
   sass
-  selenium-webdriver
+  selenium-webdriver (~> 2.35.1)
