@@ -1,6 +1,6 @@
 window.expectBarcodeScan = (submit, expectedSerializedValue, inputTargetName, expectedInputValue, barcode, hitEnter = true)->
 
-  form = $("#jasmine-fixtures form:last")
+  form = $("form:last")
 
   form.on "submit", (e)->
     e.preventDefault()

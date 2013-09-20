@@ -1,5 +1,5 @@
 #!/bin/bash
 coffee --output . --compile ./src &&
-coffee --output ./spec/javascripts --compile ./spec/javascripts/src &&
-coffee --output ./spec/javascripts/helpers --compile ./spec/javascripts/helpers
+coffee --output ./spec --compile ./spec/src &&
+coffee --output ./spec/helpers --compile ./spec/helpers
 exit

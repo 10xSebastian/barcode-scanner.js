@@ -1,9 +1,10 @@
 source 'http://rubygems.org'
 
-gem "rake"
-gem "selenium-webdriver", "~> 2.35.1"
-gem 'guard'
-gem 'guard-shell'
+gem 'capybara'
+gem 'guard', :group => :development
+gem 'guard-shell', :group => :development
 gem 'haml'
 gem 'jasmine'
+gem 'rake'
 gem 'sass'
+gem 'selenium-webdriver'

@@ -6,7 +6,7 @@
     if (hitEnter == null) {
       hitEnter = true;
     }
-    form = $("#jasmine-fixtures form:last");
+    form = $("form:last");
     form.on("submit", function(e) {
       e.preventDefault();
       if (!submit) {
