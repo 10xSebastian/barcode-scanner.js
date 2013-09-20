@@ -7,4 +7,4 @@ before_install:
   - npm install coffee-script
 before_script:
   - "sh compile.sh"
-script: bundle exec rake capyspec
+script: bundle exec rake jasmine:ci
