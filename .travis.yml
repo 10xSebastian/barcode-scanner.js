@@ -3,6 +3,8 @@ notifications:
   email: false
 rvm:
   - 1.9.3
+before_install:
+  - npm install coffee-script
 before_script:
   - "sh compile.sh"
 script: bundle exec rake capyspec
