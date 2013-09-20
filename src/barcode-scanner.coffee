@@ -20,6 +20,7 @@ class BarcodeScanner
       callback: callback
 
   execute: =>
+    debugger
     target = if $("input:focus, textarea:focus").length then $("input:focus, textearea:focus") else $("[data-barcode-scanner-target]:last")
     code = @buffer
     action = @getAction code
