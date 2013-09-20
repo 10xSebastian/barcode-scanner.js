@@ -10,5 +10,22 @@ end
 namespace :travis do
   task :test do
 
+    require 'rubygems'
+    require 'capybara'
+    require 'capybara/dsl'
+
+    Capybara.run_server = false
+    Capybara.current_driver = :selenium
+    Capybara.app_host = 'https://rawgithub.com'
+
+    include Capybara
+    visit("/spape/barcode-scanner.js/master/SpecRunner.html")
+
+    if not page.text[/Passing \d+ specs/].nil? and page.text[/Failing \d+ spec/].nil?
+      exit 0
+    else
+      exit 1
+    end
+
   end
 end
