@@ -20,8 +20,8 @@ class BarcodeScanner
       callback: callback
 
   execute: =>
-    debugger
-    target = if $("input:focus, textarea:focus").length then $("input:focus, textearea:focus") else $("[data-barcode-scanner-target]:last")
+    activeElement = $ document.activeElement
+    target = if activeElement.is("input, textarea") then activeElement else $("[data-barcode-scanner-target]:last")
     code = @buffer
     action = @getAction code
     if action?

@@ -48,9 +48,9 @@
     };
 
     BarcodeScanner.prototype.execute = function() {
-      debugger;
-      var action, code, target;
-      target = $("input:focus, textarea:focus").length ? $("input:focus, textearea:focus") : $("[data-barcode-scanner-target]:last");
+      var action, activeElement, code, target;
+      activeElement = $(document.activeElement);
+      target = activeElement.is("input, textarea") ? activeElement : $("[data-barcode-scanner-target]:last");
       code = this.buffer;
       action = this.getAction(code);
       if (action != null) {

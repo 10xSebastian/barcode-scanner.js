@@ -10,4 +10,4 @@ before_install:
   - "/sbin/start-stop-daemon --start --quiet --pidfile /tmp/custom_xvfb_99.pid --make-pidfile --background --exec /usr/bin/Xvfb -- :99 -ac -screen 0 1280x1024x16"
 before_script:
   - "sh compile.sh"
-script: "export DISPLAY=:99.0 && bundle exec rake jasmine"
+script: "export DISPLAY=:99.0 && bundle exec rake jasmine:ci"
