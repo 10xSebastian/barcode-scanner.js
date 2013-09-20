@@ -2,16 +2,23 @@ window.expectBarcodeScan = (submit, expectedSerializedValue, inputTargetName, ex
 
   form = $("#jasmine-fixtures form:last")
 
-  form.on "submit", -> 
+  form.on "submit", (e)->
+    e.preventDefault()
     unless submit
       expect(true).toBe(false, "this barcode scan should not submit")
+    return false
 
   for character in barcode.split("")
     KeyEvent.simulate character.charCodeAt(0)
     
   KeyEvent.simulate(13, 13) if hitEnter
 
-  expect(form.find("input[name='#{inputTargetName}']").val()).toBe expectedInputValue
+  if inputTargetName?
+    expect(form.find("input[name='#{inputTargetName}']").val()).toBe expectedInputValue
+  else
+    for input in form.find("input")
+      expect($(input).val().length).toBe 0
+
   expect(form.serialize()).toBe expectedSerializedValue if expectedSerializedValue?
 
   form.off "submit"

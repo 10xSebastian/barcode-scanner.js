@@ -25,9 +25,37 @@
       loadFixtures('form-with-prevent-submit.html');
       return expectBarcodeScan(false, null, "second", "SPAPE", "SPAPE");
     });
-    return it("prevents submit when the specific data attribute is set on the input", function() {
+    it("prevents submit when the specific data attribute is set on the input", function() {
       loadFixtures('input-with-prevent-submit.html');
       return expectBarcodeScan(false, null, "second", "SPAPE", "SPAPE");
+    });
+    it("performs a simple registered action", function() {
+      var functionCalls;
+      functionCalls = [];
+      loadFixtures('multiple-barcode-targets.html');
+      BarcodeScanner.addAction("c (id)", function(id) {
+        return functionCalls.push(id);
+      });
+      expectBarcodeScan(false, null, null, null, "c 512");
+      return expect(functionCalls).toMatch(['512']);
+    });
+    return it("performs a more complex registered action", function() {
+      var functionCalls;
+      functionCalls = [];
+      loadFixtures('multiple-barcode-targets.html');
+      BarcodeScanner.addAction("c (id) (user) (name)", function(id, user, name) {
+        return functionCalls.push({
+          id: id,
+          user: user,
+          name: name
+        });
+      });
+      expectBarcodeScan(false, null, null, null, "c 512 SPAPE Sebastian");
+      return expect(functionCalls).toMatch({
+        id: '512',
+        user: 'SPAPE',
+        name: 'Sebastian'
+      });
     });
   });
 

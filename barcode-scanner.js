@@ -30,28 +30,26 @@
     __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
 
   BarcodeScanner = (function() {
-    var actions, buffer, delay, timer;
 
     function BarcodeScanner() {
       this.submit = __bind(this.submit, this);
 
       this.keyPress = __bind(this.keyPress, this);
 
-      this.getCode = __bind(this.getCode, this);
+      this.getArguments = __bind(this.getArguments, this);
+
+      this.getAction = __bind(this.getAction, this);
 
       this.execute = __bind(this.execute, this);
 
+      this.addAction = __bind(this.addAction, this);
+
       this.addChar = __bind(this.addChar, this);
-
+      this.actions = [];
+      this.buffer = null;
+      this.delay = 50;
+      this.timer = null;
     }
-
-    actions = [];
-
-    buffer = null;
-
-    delay = 50;
-
-    timer = null;
 
     BarcodeScanner.prototype.addChar = function(char) {
       var _ref;
@@ -65,12 +63,23 @@
       }), this.delay);
     };
 
-    BarcodeScanner.prototype.execute = function() {
-      var code, target;
-      target = $("input:focus, textarea:focus").length ? $("input:focus, textearea:focus") : $("[data-barcode-scanner-target]:last");
-      code = this.getCode();
-      if (typeof knownAction !== "undefined" && knownAction !== null) {
+    BarcodeScanner.prototype.addAction = function(string, callback) {
+      var regexp;
+      string = "^" + (string.replace(/\(.*?\)/ig, "(\\S*)")) + "$";
+      regexp = new RegExp(string);
+      return this.actions.push({
+        regexp: regexp,
+        callback: callback
+      });
+    };
 
+    BarcodeScanner.prototype.execute = function() {
+      var action, code, target;
+      target = $("input:focus, textarea:focus").length ? $("input:focus, textearea:focus") : $("[data-barcode-scanner-target]:last");
+      code = this.buffer;
+      action = this.getAction(code);
+      if (action != null) {
+        action.callback.apply(target, this.getArguments(code, action));
       } else {
         target.val("").val(code);
         this.submit(target);
@@ -78,8 +87,21 @@
       return this.buffer = null;
     };
 
-    BarcodeScanner.prototype.getCode = function() {
-      return this.buffer.replace(/^\s\w\s/, "");
+    BarcodeScanner.prototype.getAction = function(code) {
+      var action, _i, _len, _ref;
+      _ref = this.actions;
+      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+        action = _ref[_i];
+        if (action.regexp.test(code)) {
+          return action;
+        }
+      }
+    };
+
+    BarcodeScanner.prototype.getArguments = function(code, action) {
+      var matches;
+      matches = action.regexp.exec(code);
+      return matches.slice(1, matches.length + 1 || 9e9);
     };
 
     BarcodeScanner.prototype.keyPress = function(e) {

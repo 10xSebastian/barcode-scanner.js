@@ -25,10 +25,11 @@
 
 class BarcodeScanner
 
-  actions = []
-  buffer = null
-  delay = 50
-  timer = null
+  constructor: ->
+    @actions = []
+    @buffer = null
+    @delay = 50
+    @timer = null
   
   addChar: (char)=>
     @buffer ?= ""
@@ -36,23 +37,32 @@ class BarcodeScanner
     window.clearTimeout @timer
     @timer = window.setTimeout (-> @buffer = null), @delay
 
+  addAction: (string, callback)=>
+    string = "^#{string.replace(/\(.*?\)/ig, "(\\S*)")}$"
+    regexp = new RegExp(string)
+    @actions.push
+      regexp: regexp
+      callback: callback
+
   execute: =>
     target = if $("input:focus, textarea:focus").length then $("input:focus, textearea:focus") else $("[data-barcode-scanner-target]:last")
-    code = do @getCode
-    # prefix = BarcodeScanner.findPrefix target
-    # code = BarcodeScanner.buffer.replace(/^\s\w\s/, "")
-    # if target.is(":not(:focus)") and @knownPrefixes[prefix]? and (typeof(@knownPrefixes[prefix]) == "function")
-    #   #@knownPrefixes[prefix].call @, code
-    #   return true
-    if knownAction?
+    code = @buffer
+    action = @getAction code
+    if action?
+      action.callback.apply target, @getArguments(code, action)
     else
       target.val("").val code
       @submit target
     @buffer = null
 
-  getCode: => @buffer.replace(/^\s\w\s/, "")
+  getAction: (code)=>
+    for action in @actions
+      if action.regexp.test code
+        return action
 
-  # findPrefix: -> @buffer.match(/^\s\w\s/).join().replace(/\s/g, "") if @buffer.match(/^\s\w\s/)?
+  getArguments: (code, action)=>
+    matches = action.regexp.exec(code)
+    return matches[1..matches.length]
 
   keyPress: (e = window.event)=>
     charCode = if (typeof e.which == "number") then e.which else e.keyCode

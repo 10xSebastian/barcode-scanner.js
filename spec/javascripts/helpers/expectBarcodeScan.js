@@ -2,15 +2,17 @@
 (function() {
 
   window.expectBarcodeScan = function(submit, expectedSerializedValue, inputTargetName, expectedInputValue, barcode, hitEnter) {
-    var character, form, _i, _len, _ref;
+    var character, form, input, _i, _j, _len, _len1, _ref, _ref1;
     if (hitEnter == null) {
       hitEnter = true;
     }
     form = $("#jasmine-fixtures form:last");
-    form.on("submit", function() {
+    form.on("submit", function(e) {
+      e.preventDefault();
       if (!submit) {
-        return expect(true).toBe(false, "this barcode scan should not submit");
+        expect(true).toBe(false, "this barcode scan should not submit");
       }
+      return false;
     });
     _ref = barcode.split("");
     for (_i = 0, _len = _ref.length; _i < _len; _i++) {
@@ -20,7 +22,15 @@
     if (hitEnter) {
       KeyEvent.simulate(13, 13);
     }
-    expect(form.find("input[name='" + inputTargetName + "']").val()).toBe(expectedInputValue);
+    if (inputTargetName != null) {
+      expect(form.find("input[name='" + inputTargetName + "']").val()).toBe(expectedInputValue);
+    } else {
+      _ref1 = form.find("input");
+      for (_j = 0, _len1 = _ref1.length; _j < _len1; _j++) {
+        input = _ref1[_j];
+        expect($(input).val().length).toBe(0);
+      }
+    }
     if (expectedSerializedValue != null) {
       expect(form.serialize()).toBe(expectedSerializedValue);
     }
