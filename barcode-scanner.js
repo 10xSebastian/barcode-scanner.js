@@ -56,7 +56,7 @@
       if (action != null) {
         action.callback.apply(target, this.getArguments(code, action));
       } else {
-        target.val("").val(code);
+        target.val("").val(code).focus();
         this.submit(target);
       }
       return this.buffer = null;

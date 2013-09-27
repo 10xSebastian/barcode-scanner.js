@@ -9,6 +9,7 @@
     form = $("form:last");
     form.on("submit", function(e) {
       e.preventDefault();
+      expect($("input:focus").length).toBe(1);
       if (!submit) {
         expect(true).toBe(false, "this barcode scan should not submit");
       }
@@ -34,7 +35,8 @@
     if (expectedSerializedValue != null) {
       expect(form.serialize()).toBe(expectedSerializedValue);
     }
-    return form.off("submit");
+    form.off("submit");
+    return $("*:focus").blur();
   };
 
 }).call(this);

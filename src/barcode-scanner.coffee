@@ -27,7 +27,7 @@ class BarcodeScanner
     if action?
       action.callback.apply target, @getArguments(code, action)
     else
-      target.val("").val code
+      target.val("").val(code).focus()
       @submit target
     @buffer = null
 

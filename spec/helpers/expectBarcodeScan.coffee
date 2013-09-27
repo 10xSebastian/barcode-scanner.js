@@ -4,6 +4,7 @@ window.expectBarcodeScan = (submit, expectedSerializedValue, inputTargetName, ex
 
   form.on "submit", (e)->
     e.preventDefault()
+    expect($("input:focus").length).toBe(1)
     unless submit
       expect(true).toBe(false, "this barcode scan should not submit")
     return false
@@ -22,3 +23,5 @@ window.expectBarcodeScan = (submit, expectedSerializedValue, inputTargetName, ex
   expect(form.serialize()).toBe expectedSerializedValue if expectedSerializedValue?
 
   form.off "submit"
+
+  $("*:focus").blur()
