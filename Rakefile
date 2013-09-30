@@ -18,7 +18,7 @@ namespace :travis do
     Capybara.current_driver = :selenium
     Capybara.app_host = 'https://rawgithub.com'
 
-    include Capybara
+    include Capybara::DSL
     visit("/spape/barcode-scanner.js/master/SpecRunner.html")
 
     if not page.text[/Passing \d+ specs/].nil? and page.text[/Failing \d+ spec/].nil?
