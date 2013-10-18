@@ -10,7 +10,7 @@ class BarcodeScanner
     @buffer ?= ""
     @buffer += char
     window.clearTimeout @timer
-    @timer = window.setTimeout (-> @buffer = null), @delay
+    @timer = window.setTimeout (=> @buffer = null), @delay
 
   addAction: (string, callback)=>
     string = "^#{string.replace(/\(.*?\)/ig, "(\\S*)")}$"

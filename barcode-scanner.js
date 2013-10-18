@@ -26,14 +26,15 @@
     }
 
     BarcodeScanner.prototype.addChar = function(char) {
-      var _ref;
+      var _ref,
+        _this = this;
       if ((_ref = this.buffer) == null) {
         this.buffer = "";
       }
       this.buffer += char;
       window.clearTimeout(this.timer);
       return this.timer = window.setTimeout((function() {
-        return this.buffer = null;
+        return _this.buffer = null;
       }), this.delay);
     };
 
