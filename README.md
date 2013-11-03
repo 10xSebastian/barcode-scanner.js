@@ -1,5 +1,6 @@
-# barcode-scanner.js [![Build Status](https://travis-ci.org/spape/barcode-scanner.js.png)](https://travis-ci.org/spape/barcode-scanner.js)
+# barcode-scanner.js
 Javascript library to handle and identify data (keystrokes) entered by a barcode scanner.
+![Barcode Scanner](https://raw.github.com/spape/barcode.js/master/img/scanner.png)
 
 ## How it works
 
