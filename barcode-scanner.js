@@ -18,12 +18,12 @@
       this.timer = null;
     }
 
-    BarcodeScanner.prototype.addChar = function(chr) {
+    BarcodeScanner.prototype.addChar = function(character) {
       var _this = this;
       if (this.buffer == null) {
         this.buffer = "";
       }
-      this.buffer += chr;
+      this.buffer += character;
       window.clearTimeout(this.timer);
       return this.timer = window.setTimeout((function() {
         return _this.buffer = null;
@@ -73,17 +73,17 @@
     };
 
     BarcodeScanner.prototype.keyPress = function(e) {
-      var charCode, chr;
+      var charCode, character;
       if (e == null) {
         e = window.event;
       }
       charCode = typeof e.which === "number" ? e.which : e.keyCode;
-      chr = String.fromCharCode(charCode);
+      character = String.fromCharCode(charCode);
       if ((charCode === 13) && (this.buffer != null)) {
         e.preventDefault();
         return this.execute();
       } else {
-        return this.addChar(chr);
+        return this.addChar(character);
       }
     };
 

@@ -6,9 +6,9 @@ class BarcodeScanner
     @delay = 50
     @timer = null
 
-  addChar: (chr)=>
+  addChar: (character)=>
     @buffer ?= ""
-    @buffer += chr
+    @buffer += character
     window.clearTimeout @timer
     @timer = window.setTimeout (=> @buffer = null), @delay
 
@@ -42,12 +42,12 @@ class BarcodeScanner
 
   keyPress: (e = window.event)=>
     charCode = if (typeof e.which == "number") then e.which else e.keyCode
-    chr = String.fromCharCode(charCode)
+    character = String.fromCharCode(charCode)
     if (charCode == 13) and @buffer?
       do e.preventDefault
       do @execute
     else
-      @addChar chr
+      @addChar character
 
   submit: (target)=>
     if not target.closest("[data-prevent-barcode-scanner-submit]").length
