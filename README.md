@@ -20,11 +20,9 @@ that is done with a barcode scanner and handle it in a special way.
 A barcode scanner input is pasted to the last input/textarea with an 'data-barcode-scanner-target' attribute found in the dom and submits the closest form.
 
 ```
-  
   <form>
     <input data-barcode-scanner-target type='text'></input>
   </form>
-
 ```
 
 - If scanner scans 'IT1232'
@@ -36,12 +34,10 @@ A barcode scanner input is pasted to the last input/textarea with an 'data-barco
 If an input or textarea is focused (clicked) by the user, the barcode scanner input is always inserted to the focused input/textarea and the surrounding form is submitted.
 
 ```
-  
   <form>
     <input name='first' type='text'></input>
     <input name='second' data-barcode-scanner-target type='text'></input>
   </form>
-
 ```
 
 - User focuses (clicks) the input with the name 'first'
@@ -54,21 +50,17 @@ If an input or textarea is focused (clicked) by the user, the barcode scanner in
 The auto submit of the surrounding form can be disabled.
 
 ```
-  
   <form data-prevent-barcode-scanner-submit>
     <input data-barcode-scanner-target type='text'></input>
   </form>
-  
 ```
 
   or 
 
 ```
-
   <form>
     <input data-barcode-scanner-target data-prevent-barcode-scanner-submit type='text'></input>
   </form>
-
 ```
 
 - If scanner scans 'IT1232'
@@ -80,12 +72,10 @@ The auto submit of the surrounding form can be disabled.
 In case you have more complex requirements, like multiple input fields where something has to decide in which input field the code has to be entered, custom actions is what you can use to solve it.
 
 ```
-
   BarcodeScanner.addAction("c (id)", function(id) {
     console.log(this); // the current input/textarea that is the barcode target
     console.log(id);  // 2121232
   });
-
 ```
 
 - If scanner scans 'c 2121232'
@@ -99,15 +89,14 @@ This would allow this library to identify each part of the barcode.
 Like 'c 123 buy 5' where 'c' stands for custom action, '123' is the id of the item, buy the action you want to perform and '5' the amount.
 
 ```
-
   BarcodeScanner.addAction("c (id) (action) (amount)", function(id, action, amount) {
     console.log(this);    // the current input/textarea that is the barcode target
     console.log(id);      // 2121232
     console.log(action);  // print
     console.log(amount);  // 2
   });
-  
 ```
+
 - If scanner scans "c 2121232 print 2"
 - The registered action will be performed (as it matches the registered pattern)
 - No form is getting submitted, no chars will be added to any input field
