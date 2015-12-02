@@ -5,7 +5,7 @@ Javascript library to handle and identify data (keystrokes) entered by a barcode
 ## Demo / Try it
 
 You can try the library and if you scanner does work with it here:
-https://htmlpreview.github.io/?https://github.com/pape-io/barcode-scanner.js/blob/master/demo.html
+[DEMO](https://htmlpreview.github.io/?https://github.com/pape-io/barcode-scanner.js/blob/master/demo.html)
 
 ## FAQ
 
